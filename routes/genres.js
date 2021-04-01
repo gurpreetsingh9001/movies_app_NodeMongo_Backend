@@ -17,11 +17,11 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const genre = await Genre.findById(req.params.id);
+        res.send(genre);
     }
     catch (err) {
         return res.status(404).send("the genre dont exist");
     }
-    res.send(genre);
 });
 
 
@@ -43,11 +43,12 @@ router.put('/:id', async (req, res) => {
 
     try {
         const genre = await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
+        res.send(genre);
     }
     catch (err) {
         return res.status(404).send("the genre dont exist");
     }
-    res.send(genre);
+
 });
 
 router.delete('/:id', async (req, res) => {
