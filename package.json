@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "fawn": "^2.1.5",
     "joi": "^17.4.0",
     "joi-browser": "^13.4.0",
+    "lodash": "^4.17.21",
     "mongoose": "^5.12.3"
   },
   "devDependencies": {},
