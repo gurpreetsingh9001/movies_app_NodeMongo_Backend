@@ -1,0 +1,30 @@
+const { User } = require('../models/user');
+const config = require('config');
+const Joi = require('joi');
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const router = express.Router();
+
+router.post('/', async (req, res) => {
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    let user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send('Invalid email or password.');
+
+    const validPassword = user.password.localeCompare(req.body.password);
+    if (validPassword !== 0) return res.status(400).send('Invalid email or password.');
+
+    res.send(true);
+});
+
+function validate(req) {
+    const schema = Joi.object({
+        email: Joi.string().min(5).max(255).required().email(),
+        password: Joi.string().min(5).max(255).required()
+    });
+
+    return schema.validate(req);
+}
+
+module.exports = router;
