@@ -1,3 +1,4 @@
 {
-    "jwtPrivateKey":"vitty_jwtPrivateKey"
+    "jwtPrivateKey":"vitty_jwtPrivateKey",
+    "db":"vitty_db"
 }

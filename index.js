@@ -10,8 +10,11 @@ const error = require('./middleware/error');
 const mongoose = require('mongoose');
 const config = require('config');
 const winston = require('winston');
+const helmet = require('helmet');
+const compression = require('compression');
 const express = require('express');
 const app = express();
+
 
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 
