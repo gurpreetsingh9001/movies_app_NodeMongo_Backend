@@ -1,3 +1,5 @@
+//code in this file can be seperated in four files i.e. database,routes,winstonLogging,config
+require('express-async-error');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
@@ -7,8 +9,11 @@ const auth = require('./routes/auth');
 const error = require('./middleware/error');
 const mongoose = require('mongoose');
 const config = require('config');
+const winston = require('winston');
 const express = require('express');
 const app = express();
+
+winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 
 //config module uses environment variables that we have set  // here it is searching for "jwtPrivateKey"  //so set private key for application
 if (!config.get('jwtPrivateKey')) {
