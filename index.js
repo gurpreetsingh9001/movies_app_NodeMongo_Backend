@@ -5,8 +5,15 @@ const rentals = require('./routes/rentals');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const mongoose = require('mongoose');
+const config = require('config');
 const express = require('express');
 const app = express();
+
+//config module uses environment variables that we have set  // here it is searching for "jwtPrivateKey"  //so set private key for application
+if (!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey is not defined');
+    process.exit(1);
+}
 
 mongoose.connect('mongodb://localhost/vitty')
     .then(() => console.log("Connected to MongoDB..."))
@@ -22,4 +29,3 @@ app.use('/api/auth', auth);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => { console.log('Listening to port ' + port) });
-

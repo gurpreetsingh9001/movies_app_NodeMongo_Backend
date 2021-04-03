@@ -19,7 +19,9 @@ router.post("/", async (req, res) => {
   user = new User(_.pick(req.body, ["name", "email", "password"]));
   await user.save();
 
-  res.send(_.pick(user, ["_id", "name", "email"]));
+  //we are creating a JsonWebToken and sending it to user when he registers,so next time if he wants to login he can just send web token to api server instead of login details //it can be done by front end app in its own way
+  const token = user.generateAuthToken();
+  res.header('x-auth-token', token).send(_.pick(user, ["_id", "name", "email"]));  //return as http header
 });
 
 module.exports = router;

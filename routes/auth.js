@@ -1,8 +1,6 @@
 const { User } = require('../models/user');
-const config = require('config');
 const Joi = require('joi');
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -15,7 +13,8 @@ router.post('/', async (req, res) => {
     const validPassword = user.password.localeCompare(req.body.password);
     if (validPassword !== 0) return res.status(400).send('Invalid email or password.');
 
-    res.send(true);
+    const token = user.generateAuthToken();
+    res.send(token);
 });
 
 function validate(req) {

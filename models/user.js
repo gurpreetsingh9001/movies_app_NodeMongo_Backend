@@ -1,4 +1,6 @@
 const Joi = require("joi");
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -9,6 +11,12 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 5, maxlength: 1024 },
   isAdmin: Boolean
 });
+
+//we cant use arrow function because they dont have their own "this"
+//we use arrow functions for standalone functions //if function is part of object we should not use it
+userSchema.methods.generateAuthToken = function () {
+  return jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));//first argument is payload , second is private key
+}
 
 const User = mongoose.model("User", userSchema);
 
