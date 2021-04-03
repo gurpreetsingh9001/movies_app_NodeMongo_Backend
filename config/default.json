@@ -1,4 +1,4 @@
 {
     "jwtPrivateKey":"defaultvitty_jwtPrivateKey",
-    "db":"mongodb://localhost/vitty"
+    "db":"vitty_db"
 }
