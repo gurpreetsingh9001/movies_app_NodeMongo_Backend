@@ -5,8 +5,13 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/me", auth, async (req, res) => {
-  const user = await User.findById(req.user._id).select("-password");
-  res.send(user);
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    res.send(user);
+  }
+  catch (err) {
+    return res.status(404).send("Cant fetch profile from database");
+  }
 });
 
 router.post("/", async (req, res) => {

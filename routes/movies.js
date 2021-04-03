@@ -1,14 +1,21 @@
 const { Movie, validateMovie } = require('../models/movie');
 const { Genre } = require('../models/genre');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/checkAdmin');
 const express = require('express');
 const router = express.Router();
 
 
 
 router.get('/', async (req, res) => {
-    const movies = await Movie.find().sort('name');
-    res.send(movies);
+    try {
+        const movies = await Movie.find().sort('name');
+        res.send(movies);
+    }
+    catch (err) {
+        return res.status(404).send("Cant fetch movies from database");
+    }
+
 });
 
 router.get('/:id', async (req, res) => {

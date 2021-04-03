@@ -9,8 +9,13 @@ const router = express.Router();
 Fawn.init(mongoose);
 
 router.get("/", async (req, res) => {
-    const rentals = await Rental.find().select("-__v").sort("-dateOut");
-    res.send(rentals);
+    try {
+        const rentals = await Rental.find().select("-__v").sort("-dateOut");
+        res.send(rentals);
+    }
+    catch (err) {
+        return res.status(404).send("Cant fetch rentals from database");
+    }
 });
 
 router.post("/", async (req, res) => {

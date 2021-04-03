@@ -1,3 +1,4 @@
+require('express-async-error');
 const { Genre, validateGenre } = require('../models/genre');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/checkAdmin');
@@ -6,9 +7,14 @@ const router = express.Router();
 
 
 
-router.get('/', async (req, res) => {
-    const genres = await Genre.find().sort('name');
-    res.send(genres);
+router.get('/', async (req, res, next) => {
+    try {
+        const genres = await Genre.find().sort('name');
+        res.send(genres);
+    }
+    catch (err) {
+        next(err);
+    }
 });
 
 router.get('/:id', async (req, res) => {
@@ -24,14 +30,20 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
 
-    const { error } = validateGenre(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    try {
+        const { error } = validateGenre(req.body);
+        if (error) return res.status(400).send(error.details[0].message);
 
-    let genre = new Genre({
-        name: req.body.name
-    });
-    genre = await genre.save();
-    res.send(genre);
+        let genre = new Genre({
+            name: req.body.name
+        });
+        genre = await genre.save();
+        res.send(genre);
+    }
+    catch (err) {
+        return res.status(400).send("Not able to post details");
+    }
+
 });
 
 router.put('/:id', async (req, res) => {
@@ -44,7 +56,7 @@ router.put('/:id', async (req, res) => {
         res.send(genre);
     }
     catch (err) {
-        return res.status(404).send("the genre dont exist");
+        return res.status(404).send("the Genre dont exist");
     }
 
 });
