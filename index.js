@@ -19,6 +19,7 @@ mongoose.connect('mongodb://localhost/vitty')
     .then(() => console.log("Connected to MongoDB..."))
     .catch(err => console.error('Could not connect to MongoDB...'));
 
+//middleware functions
 app.use(express.json());
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);

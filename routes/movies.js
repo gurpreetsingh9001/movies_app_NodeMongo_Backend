@@ -1,5 +1,6 @@
 const { Movie, validateMovie } = require('../models/movie');
 const { Genre } = require('../models/genre');
+const auth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 
@@ -65,7 +66,7 @@ router.put('/:id', async (req, res) => {
 
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     const movie = await Movie.findByIdAndRemove(req.params.id);
     if (!movie) return res.status(404).send("movie not found");
     res.send(movie);

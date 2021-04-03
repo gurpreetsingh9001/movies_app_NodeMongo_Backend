@@ -15,7 +15,9 @@ const userSchema = new mongoose.Schema({
 //we cant use arrow function because they dont have their own "this"
 //we use arrow functions for standalone functions //if function is part of object we should not use it
 userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));//first argument is payload , second is private key
+  //first argument is payload , second is private key  
+  //webtoken will store the details like userID,name,email
+  return jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
 }
 
 const User = mongoose.model("User", userSchema);
